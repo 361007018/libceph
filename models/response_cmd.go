@@ -1,4 +1,4 @@
-package models
+package model
 
 type ResponseStatus struct {
 	Health struct {
@@ -147,4 +147,11 @@ type ResponseOsdPoolLs []struct {
 	ExpectedNumObjects        int        `json:"expected_num_objects"`
 	FastRead                  bool       `json:"fast_read"`
 	Options                   struct{}   `json:"options"`
+}
+
+type ResponsePoolGet struct {
+	Pool    string `json:"pool"`
+	PoolId  int    `json:"pool_id"`
+	Size    int    `json:"size"`
+	MinSize int    `json:"min_size"`
 }

@@ -2,7 +2,6 @@ package actions
 
 import (
 	"encoding/json"
-	"libceph/models"
 )
 
 // Cluster ...
@@ -11,7 +10,7 @@ type Cluster struct {
 }
 
 // Status ...
-func (this *Cluster) Status() (*models.ResponseStatus, error) {
+func (this *Cluster) Status() ([]byte, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "status",
 		"format": "json",
@@ -23,15 +22,10 @@ func (this *Cluster) Status() (*models.ResponseStatus, error) {
 	if err != nil {
 		return nil, err
 	}
-	var responseStatus = new(models.ResponseStatus)
-	err = json.Unmarshal(result, &responseStatus)
-	if err != nil {
-		return nil, err
-	}
-	return responseStatus, nil
+	return result, nil
 }
 
-func (this *Cluster) Version() (*models.ResponseVersion, error) {
+func (this *Cluster) Version() ([]byte, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "version",
 		"format": "json",
@@ -43,10 +37,5 @@ func (this *Cluster) Version() (*models.ResponseVersion, error) {
 	if err != nil {
 		return nil, err
 	}
-	var responseVersion = new(models.ResponseVersion)
-	err = json.Unmarshal(result, responseVersion)
-	if err != nil {
-		return nil, err
-	}
-	return responseVersion, nil
+	return result, nil
 }
