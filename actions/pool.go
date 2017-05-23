@@ -1,19 +1,32 @@
 package actions
 
 import (
-	"encoding/json"
-	"fmt"
+	"strconv"
 )
 
 type Pool struct {
 	ActionBase
 }
 
-func (this *Pool) Ls(detail string) ([]byte, error) {
+func (this *Pool) Create(pool_name string, pg_num int) error {
 	cmdline := `{
-		"prefix": "osd pool ls",
-		"detail": "` + detail + `",
-		"format": "json",
+		"prefix":   "osd pool create",
+		"pool": "` + pool_name + `",
+		"pg_num":   ` + strconv.Itoa(pg_num) + `
+	}`
+	_, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (this *Pool) Get(pool_name string, key string) ([]byte, error) {
+	cmdline := `{
+		"prefix":"osd pool get",
+		"pool":"` + pool_name + `",
+		"var":"` + key + `",
+		"format":"json"
 	}`
 	result, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
 	if err != nil {
@@ -22,27 +35,26 @@ func (this *Pool) Ls(detail string) ([]byte, error) {
 	return result, nil
 }
 
-func (this *Pool) Create(pool_name string, pg_num int, pgp_num int) error {
-	cmdline, err := json.Marshal(map[string]interface{}{
-		"prefix":   "osd pool create",
-		"poolname": pool_name,
-		"pg_num":   16,
-		"format":   "json",
-	})
+func (this *Pool) Ls(detail string) ([]byte, error) {
+	cmdline := `{
+		"prefix": "osd pool ls",
+		"detail": "` + detail + `",
+		"format": "json"
+	}`
+	result, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
 	if err != nil {
-		return err
+		return nil, err
 	}
-	result, info, err := this.CephConn.Rados.MonCommand(cmdline)
-	fmt.Println("result:" + string(result[:]))
-	fmt.Println("info:" + info)
-	if err != nil {
-		return err
-	}
-	return nil
+	return result, nil
 }
 
-func (this *Pool) SetAttr(pool_name string, key string, value string) error {
-	cmdline := `{"prefix":"osd pool set","pool":"` + pool_name + `","var":"` + key + `","val":"` + value + `"}`
+func (this *Pool) Set(pool_name string, key string, value string) error {
+	cmdline := `{
+		"prefix":"osd pool set",
+		"pool":"` + pool_name + `",
+		"var":"` + key + `",
+		"val":"` + value + `"
+	}`
 	_, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
 	if err != nil {
 		return err
@@ -50,8 +62,18 @@ func (this *Pool) SetAttr(pool_name string, key string, value string) error {
 	return nil
 }
 
-func (this *Pool) GetAttr(pool_name string, key string) ([]byte, error) {
-	cmdline := `{"prefix":"osd pool get","pool":"` + pool_name + `","var":"` + key + `","format":"json"}`
+func (this *Pool) Stats(pool_name string) ([]byte, error) {
+	cmdline := `{
+		"prefix":"osd pool stats",
+		` + func() string {
+		if pool_name != "" {
+			return `"name":"` + pool_name + `",`
+		} else {
+			return ""
+		}
+	}() + `
+		"format":"json"
+	}`
 	result, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
 	if err != nil {
 		return nil, err
