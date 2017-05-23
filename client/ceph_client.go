@@ -21,6 +21,8 @@ func GetCephClient() (*CephClient, error) {
 type CephClient struct {
 	Cluster *actions.Cluster
 	Pool    *actions.Pool
+	Mon     *actions.Mon
+	Osd     *actions.Osd
 }
 
 func (this *CephClient) Initial() error {
@@ -28,9 +30,25 @@ func (this *CephClient) Initial() error {
 	if err != nil {
 		return err
 	}
-	this.Cluster = new(actions.Cluster)
-	this.Cluster.CephConn = cephConn
-	this.Pool = new(actions.Pool)
-	this.Pool.CephConn = cephConn
+	this.Cluster = &actions.Cluster{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
+	this.Pool = &actions.Pool{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
+	this.Mon = &actions.Mon{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
+	this.Osd = &actions.Osd{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
 	return nil
 }
