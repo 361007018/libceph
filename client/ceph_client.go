@@ -23,6 +23,7 @@ type CephClient struct {
 	Pool    *actions.Pool
 	Mon     *actions.Mon
 	Osd     *actions.Osd
+	Pg      *actions.Pg
 }
 
 func (this *CephClient) Initial() error {
@@ -46,6 +47,11 @@ func (this *CephClient) Initial() error {
 		},
 	}
 	this.Osd = &actions.Osd{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
+	this.Pg = &actions.Pg{
 		ActionBase: actions.ActionBase{
 			CephConn: cephConn,
 		},
