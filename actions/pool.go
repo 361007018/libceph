@@ -21,6 +21,20 @@ func (this *Pool) Create(pool_name string, pg_num int) error {
 	return nil
 }
 
+func (this *Pool) Rm(pool_name string, pool_name_2 string, sure string) error {
+	cmdline := `{
+		"prefix":   "osd pool rm",
+		"pool": "` + pool_name + `",
+		"pool2": "` + pool_name_2 + `",
+		"sure": "` + sure + `",
+	}`
+	_, _, err := this.CephConn.Rados.MonCommand([]byte(cmdline))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (this *Pool) Get(pool_name string, key string) ([]byte, error) {
 	cmdline := `{
 		"prefix":"osd pool get",
