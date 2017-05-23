@@ -24,6 +24,7 @@ type CephClient struct {
 	Mon     *actions.Mon
 	Osd     *actions.Osd
 	Pg      *actions.Pg
+	Auth    *actions.Auth
 }
 
 func (this *CephClient) Initial() error {
@@ -52,6 +53,11 @@ func (this *CephClient) Initial() error {
 		},
 	}
 	this.Pg = &actions.Pg{
+		ActionBase: actions.ActionBase{
+			CephConn: cephConn,
+		},
+	}
+	this.Auth = &actions.Auth{
 		ActionBase: actions.ActionBase{
 			CephConn: cephConn,
 		},
