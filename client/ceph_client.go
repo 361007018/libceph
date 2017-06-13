@@ -2,12 +2,11 @@ package client
 
 import (
 	"libceph/actions"
-	"libceph/common"
+	"libceph/conn"
 )
 
 var cephClient *CephClient
 
-// GetCephConn ...
 func GetCephClient() (*CephClient, error) {
 	if cephClient == nil {
 		cephClient = new(CephClient)
@@ -28,7 +27,7 @@ type CephClient struct {
 }
 
 func (this *CephClient) Initial() error {
-	cephConn, err := common.GetCephConn()
+	cephConn, err := conn.GetCephConn()
 	if err != nil {
 		return err
 	}

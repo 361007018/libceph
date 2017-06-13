@@ -1,4 +1,4 @@
-package common
+package conn
 
 import (
 	"github.com/ceph/go-ceph/rados"

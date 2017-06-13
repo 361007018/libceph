@@ -1,9 +1,9 @@
 package actions
 
 import (
-	"libceph/common"
+	"libceph/conn"
 )
 
 type ActionBase struct {
-	CephConn *common.CephConn
+	CephConn *conn.CephConn
 }
