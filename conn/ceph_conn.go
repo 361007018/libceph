@@ -10,17 +10,17 @@ type CephConn struct {
 }
 
 // GetCephConn ...
-func GetCephConn() (*CephConn, error) {
+func GetCephConn(user string) (*CephConn, error) {
 	cephConn := new(CephConn)
-	if err := cephConn.Connect(); err != nil {
+	if err := cephConn.Connect(user); err != nil {
 		return nil, err
 	}
 	return cephConn, nil
 }
 
 // Connect ...
-func (cephCli *CephConn) Connect() error {
-	conn, err := rados.NewConnWithUser("iaas")
+func (cephCli *CephConn) Connect(user string) error {
+	conn, err := rados.NewConnWithUser(user)
 	if err != nil {
 		return err
 	}
