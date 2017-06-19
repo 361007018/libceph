@@ -90,6 +90,22 @@ type ResOsdmap struct {
 	NumRemappedPgs uint64 `json:"num_remapped_pgs"`
 }
 
+type ResOsdTree struct {
+	Nodes []struct {
+		Id              int64   `json:"id"`
+		Name            string  `json:"name"`
+		Type            string  `json:"type"`
+		TypeId          int64   `json:"type_id"`
+		CrushWeight     float64 `json:"crush_weight"`
+		Depth           uint64  `json:"depth"`
+		Exists          uint64  `json:"exists"`
+		Status          string  `json:"status"`
+		Reweight        float64 `json:"reweight"`
+		PrimaryAffinity float64 `json:"primary_affinity"`
+		Children        []int64 `json:"children"`
+	} `json:"nodes"`
+}
+
 type ResPgStat struct {
 	NumBytes      uint64            `json:"num_bytes"`
 	NumPgByState  []ResNumPgByState `json:"num_pg_by_state"`
@@ -216,53 +232,54 @@ type ResPoolLs []string
 type ResPoolLsDetail []ResPoolDetail
 
 type ResPoolDetail struct {
-	Flags                          uint64            `json:"flags"`
-	FlagsNames                     string            `json:"flags_names"`
-	Type                           int64             `json:"type"`
-	Size                           int64             `json:"size"`
-	MinSize                        int64             `json:"min_size"`
-	CrushRuleset                   int64             `json:"crush_ruleset"`
-	ObjectHash                     int64             `json:"object_hash"`
-	PgNum                          uint64            `json:"pg_num"`
-	PgPlacementNum                 uint64            `json:"pg_placement_num"`
-	CrashReplayInterval            uint64            `json:"crash_reply_interval"`
-	LastChange                     string            `json:"last_change"`
-	LastForceOpResend              string            `json:"last_force_op_resend"`
-	LastForceOpResendPreluminous   string            `json:"last_force_op_resend_preluminous"`
-	Auid                           uint64            `json:"auid"`
-	SnapMode                       string            `json:"snap_mode"`
-	SnapSeq                        uint64            `json:"snap_seq"`
-	SnapEpoch                      uint64            `json:"snap_epoch"`
-	PoolSnaps                      []ResPoolSnapInfo `json:"pool_snaps"`
-	RemovedSnaps                   string            `json:"removed_snaps"`
-	QuotaMaxBytes                  uint64            `json:"quota_max_bytes"`
-	QuotaMaxObjects                uint64            `json:"quota_max_objects"`
-	Tiers                          []uint64          `json:"tiers"`
-	TierOf                         int64             `json:"tier_of"`
-	ReadTier                       int64             `json:"read_tier"`
-	WriteTier                      int64             `json:"write_tier"`
-	CacheMode                      string            `json:"cache_mode"`
-	TargetMaxBytes                 uint64            `json:"target_max_bytes"`
-	TargetMaxObjects               uint64            `json:"target_max_objects"`
-	CacheTargetDirtyRatioMicro     uint64            `json:"cache_target_dirty_ratio_micro"`
-	CacheTargetDirtyHighRatioMicro uint64            `json:"cache_target_dirty_high_ratio_micro"`
-	CacheTargetFullRatioMicro      uint64            `json:"cache_target_full_ratio_micro"`
-	CacheMinFlushAge               uint64            `json:"cache_min_flush_age"`
-	CacheMinEvictAge               uint64            `json:"cache_min_evict_age"`
-	ErasureCodeProfile             string            `json:"erasure_code_profile"`
-	HitSetParams                   ResHitSetParams   `json:"hit_set_params"`
-	HitSetPeriod                   uint64            `json:"hit_set_period"`
-	HitSetCount                    uint64            `json:"hit_set_count"`
-	UseGmtHitset                   bool              `json:"use_gmt_hitset"`
-	MinReadRecencyForPromote       uint64            `json:"min_read_recency_for_promote"`
-	MinWriteRecencyForPromote      uint64            `json:"min_write_recency_for_promote"`
-	HitSetGradeDecayRate           uint64            `json:"hit_set_grade_decay_rate"`
-	HitSetSearchLastN              uint64            `json:"hit_set_search_last_n"`
-	GradeTable                     []uint64          `json:"grade_table"`
-	StripeWidth                    uint64            `json:"stripe_width"`
-	ExpectedNumObjects             uint64            `json:"expected_num_objects"`
-	FastRead                       bool              `json:"fast_read"`
-	Options                        ResOptions        `json:"options"`
+	PoolName                       string          `json:"pool_name"`
+	Flags                          uint64          `json:"flags"`
+	FlagsNames                     string          `json:"flags_names"`
+	Type                           int64           `json:"type"`
+	Size                           int64           `json:"size"`
+	MinSize                        int64           `json:"min_size"`
+	CrushRuleset                   int64           `json:"crush_ruleset"`
+	ObjectHash                     int64           `json:"object_hash"`
+	PgNum                          uint64          `json:"pg_num"`
+	PgPlacementNum                 uint64          `json:"pg_placement_num"`
+	CrashReplayInterval            uint64          `json:"crash_reply_interval"`
+	LastChange                     string          `json:"last_change"`
+	LastForceOpResend              string          `json:"last_force_op_resend"`
+	LastForceOpResendPreluminous   string          `json:"last_force_op_resend_preluminous"`
+	Auid                           uint64          `json:"auid"`
+	SnapMode                       string          `json:"snap_mode"`
+	SnapSeq                        uint64          `json:"snap_seq"`
+	SnapEpoch                      uint64          `json:"snap_epoch"`
+	PoolSnaps                      []ResPoolSnap   `json:"pool_snaps"`
+	RemovedSnaps                   string          `json:"removed_snaps"`
+	QuotaMaxBytes                  uint64          `json:"quota_max_bytes"`
+	QuotaMaxObjects                uint64          `json:"quota_max_objects"`
+	Tiers                          []uint64        `json:"tiers"`
+	TierOf                         int64           `json:"tier_of"`
+	ReadTier                       int64           `json:"read_tier"`
+	WriteTier                      int64           `json:"write_tier"`
+	CacheMode                      string          `json:"cache_mode"`
+	TargetMaxBytes                 uint64          `json:"target_max_bytes"`
+	TargetMaxObjects               uint64          `json:"target_max_objects"`
+	CacheTargetDirtyRatioMicro     uint64          `json:"cache_target_dirty_ratio_micro"`
+	CacheTargetDirtyHighRatioMicro uint64          `json:"cache_target_dirty_high_ratio_micro"`
+	CacheTargetFullRatioMicro      uint64          `json:"cache_target_full_ratio_micro"`
+	CacheMinFlushAge               uint64          `json:"cache_min_flush_age"`
+	CacheMinEvictAge               uint64          `json:"cache_min_evict_age"`
+	ErasureCodeProfile             string          `json:"erasure_code_profile"`
+	HitSetParams                   ResHitSetParams `json:"hit_set_params"`
+	HitSetPeriod                   uint64          `json:"hit_set_period"`
+	HitSetCount                    uint64          `json:"hit_set_count"`
+	UseGmtHitset                   bool            `json:"use_gmt_hitset"`
+	MinReadRecencyForPromote       uint64          `json:"min_read_recency_for_promote"`
+	MinWriteRecencyForPromote      uint64          `json:"min_write_recency_for_promote"`
+	HitSetGradeDecayRate           uint64          `json:"hit_set_grade_decay_rate"`
+	HitSetSearchLastN              uint64          `json:"hit_set_search_last_n"`
+	GradeTable                     []uint64        `json:"grade_table"`
+	StripeWidth                    uint64          `json:"stripe_width"`
+	ExpectedNumObjects             uint64          `json:"expected_num_objects"`
+	FastRead                       bool            `json:"fast_read"`
+	Options                        ResOptions      `json:"options"`
 }
 
 type ResOptions struct {
@@ -286,7 +303,7 @@ type ResHitSetParams struct {
 	Type string `json:"type"`
 }
 
-type ResPoolSnapInfo struct {
+type ResPoolSnap struct {
 	Name   string `json:"name"`
 	Snapid uint64 `json:"snapid"`
 	Stamp  string `json:"stamp"`
