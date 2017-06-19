@@ -15,6 +15,24 @@ type ResAuthList struct {
 	AuthDump []ResAuth `json:"auth_dump"`
 }
 
+type ResDf struct {
+	Stats struct {
+		TotalBytes      int64 `json:"total_bytes"`
+		TotalUsedBytes  int64 `json:"total_used_bytes"`
+		TotalAvailBytes int64 `json:"total_avail_bytes"`
+	} `json:"stats"`
+	Pools []struct {
+		Name  string `json:"name"`
+		Id    uint64 `json:"id"`
+		Stats struct {
+			KbUsed    uint64 `json:"kb_used"`
+			BytesUsed uint64 `json:"bytes_used"`
+			MaxAvail  uint64 `json:"max_avail"`
+			Objects   uint64 `json:"objects"`
+		} `json:"stats"`
+	} `json:"pools"`
+}
+
 type ResFsmap struct {
 	Epoch   uint64         `json:"epoch"`
 	Id      uint64         `json:"id"`
