@@ -12,6 +12,7 @@ type Cluster struct {
 func (this *Cluster) Df() (*common.ResDf, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "df",
+		"detail": "detail",
 		"format": "json",
 	})
 	if err != nil {

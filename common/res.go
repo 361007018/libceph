@@ -20,15 +20,24 @@ type ResDf struct {
 		TotalBytes      int64 `json:"total_bytes"`
 		TotalUsedBytes  int64 `json:"total_used_bytes"`
 		TotalAvailBytes int64 `json:"total_avail_bytes"`
+		TotalObjects    int64 `json:"total_objects"`
 	} `json:"stats"`
 	Pools []struct {
 		Name  string `json:"name"`
 		Id    uint64 `json:"id"`
 		Stats struct {
-			KbUsed    uint64 `json:"kb_used"`
-			BytesUsed uint64 `json:"bytes_used"`
-			MaxAvail  uint64 `json:"max_avail"`
-			Objects   uint64 `json:"objects"`
+			KbUsed       uint64 `json:"kb_used"`
+			BytesUsed    uint64 `json:"bytes_used"`
+			MaxAvail     uint64 `json:"max_avail"`
+			Objects      uint64 `json:"objects"`
+			QuotaObjects uint64 `json:"quota_objects"`
+			QuotaBytes   uint64 `json:"quota_bytes"`
+			Dirty        uint64 `json:"dirty"`
+			Rd           uint64 `json:"rd"`
+			RdBytes      uint64 `json:"rd_bytes"`
+			Wr           uint64 `json:"wr"`
+			WrBytes      uint64 `json:"wr_bytes"`
+			RawBytesUsed uint64 `json:"raw_bytes_used"`
 		} `json:"stats"`
 	} `json:"pools"`
 }
