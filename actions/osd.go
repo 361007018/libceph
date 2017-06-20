@@ -9,6 +9,30 @@ type Osd struct {
 	ActionBase
 }
 
+func (this *Osd) In(ids []string) error {
+	cmdline, err := json.Marshal(map[string]interface{}{
+		"prefix": "osd in",
+		"ids":    ids,
+	})
+	_, _, err = this.CephConn.Rados.MonCommand(cmdline)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (this *Osd) Out(ids []string) error {
+	cmdline, err := json.Marshal(map[string]interface{}{
+		"prefix": "osd out",
+		"ids":    ids,
+	})
+	_, _, err = this.CephConn.Rados.MonCommand(cmdline)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (this *Osd) Stat() (*common.ResOsdmap, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "osd stat",
