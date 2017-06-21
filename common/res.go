@@ -43,68 +43,58 @@ type ResDf struct {
 }
 
 type ResFsmap struct {
-	Epoch   uint64         `json:"epoch"`
-	Id      uint64         `json:"id"`
-	Up      uint64         `json:"up"`
-	In      uint64         `json:"in"`
-	Max     uint64         `json:"max"`
-	Failed  uint64         `json:"failed"`
-	Damaged uint64         `json:"damaged"`
-	ByRank  []ResFsmapRank `json:"by_rank"`
-}
-
-type ResFsmapRank struct {
-	FilesystemId uint64 `json:"filesystem_id"`
-	Rank         uint64 `json:"rank"`
-	Name         string `json:"name"`
-	Status       string `json:"status"`
+	Epoch   uint64 `json:"epoch"`
+	Id      uint64 `json:"id"`
+	Up      uint64 `json:"up"`
+	In      uint64 `json:"in"`
+	Max     uint64 `json:"max"`
+	Failed  uint64 `json:"failed"`
+	Damaged uint64 `json:"damaged"`
+	ByRank  []struct {
+		FilesystemId uint64 `json:"filesystem_id"`
+		Rank         uint64 `json:"rank"`
+		Name         string `json:"name"`
+		Status       string `json:"status"`
+	} `json:"by_rank"`
 }
 
 type ResMonStatus struct {
-	Name            string                       `json:"name"`
-	Rank            int64                        `json:"rank"`
-	State           string                       `json:"state"`
-	ElectionEpoch   int64                        `json:"election_epoch"`
-	Quorum          []int64                      `json:"quorum"`
-	OutsideQuorum   []string                     `json:"outside_quorum"`
-	ExtraProbePeers []ResMonStatusExtraProbePeer `json:"extra_probe_peers"`
-	SyncProvider    []ResMonStatusSyncProvider   `json:"sync_provider"`
-	Sync            ResMonStatusSync             `json:"sync"`
-	Monmap          ResMonmap                    `json:"monmap"`
-	ProviderKillAt  int64                        `json:"provider_kill_at"`
-	RequesterKillAt int64                        `json:"requester_kill_at"`
-}
-
-type ResMonStatusExtraProbePeer struct {
-	Peer string `json:"peer"`
-}
-
-type ResMonStatusSyncProvider struct {
-	Cookie        uint64 `json:“cookie”`
-	Entity        string `json:"entity"`
-	Timeout       string `json:"timeout"`
-	LastCommitted uint64 `json:"last_committed"`
-	LastKey       string `json:"last_key"`
-}
-
-type ResMonStatusSync struct {
-	SyncProvider     string `json:"sync_provider"`
-	SyncCookie       uint64 `json:"sync_cookie"`
-	SyncStartVersion uint64 `json:"sync_start_version"`
+	Name            string   `json:"name"`
+	Rank            int64    `json:"rank"`
+	State           string   `json:"state"`
+	ElectionEpoch   int64    `json:"election_epoch"`
+	Quorum          []int64  `json:"quorum"`
+	OutsideQuorum   []string `json:"outside_quorum"`
+	ExtraProbePeers []struct {
+		Peer string `json:"peer"`
+	} `json:"extra_probe_peers"`
+	SyncProvider []struct {
+		Cookie        uint64 `json:“cookie”`
+		Entity        string `json:"entity"`
+		Timeout       string `json:"timeout"`
+		LastCommitted uint64 `json:"last_committed"`
+		LastKey       string `json:"last_key"`
+	} `json:"sync_provider"`
+	Sync struct {
+		SyncProvider     string `json:"sync_provider"`
+		SyncCookie       uint64 `json:"sync_cookie"`
+		SyncStartVersion uint64 `json:"sync_start_version"`
+	} `json:"sync"`
+	Monmap          ResMonmap `json:"monmap"`
+	ProviderKillAt  int64     `json:"provider_kill_at"`
+	RequesterKillAt int64     `json:"requester_kill_at"`
 }
 
 type ResMonmap struct {
-	Epoch    int            `json:"epoch"`
-	Fsid     string         `json:"fsid"`
-	Modified string         `json:"modified"`
-	Created  string         `json:"created"`
-	Mons     []ResMonmapMon `json:"mons"`
-}
-
-type ResMonmapMon struct {
-	Addr string `json:"addr"`
-	Name string `json:"name"`
-	Rank int    `json:"rank"`
+	Epoch    int    `json:"epoch"`
+	Fsid     string `json:"fsid"`
+	Modified string `json:"modified"`
+	Created  string `json:"created"`
+	Mons     []struct {
+		Addr string `json:"addr"`
+		Name string `json:"name"`
+		Rank int    `json:"rank"`
+	} `json:"mons"`
 }
 
 type ResOsdmap struct {
@@ -134,30 +124,31 @@ type ResOsdTree struct {
 }
 
 type ResPgStat struct {
-	NumBytes      uint64            `json:"num_bytes"`
-	NumPgByState  []ResNumPgByState `json:"num_pg_by_state"`
-	NumPgs        uint64            `json:"num_pgs"`
-	RawBytes      uint64            `json:"raw_bytes"`
-	RawBytesAvail uint64            `json:"raw_bytes_avail"`
-	RawBytesUsed  uint64            `json:"raw_bytes_used"`
-	Version       uint64            `json:"version"`
+	NumBytes     uint64 `json:"num_bytes"`
+	NumPgByState []struct {
+		Name string `json:"name"`
+		Num  uint64 `json:"num"`
+	} `json:"num_pg_by_state"`
+	NumPgs        uint64 `json:"num_pgs"`
+	RawBytes      uint64 `json:"raw_bytes"`
+	RawBytesAvail uint64 `json:"raw_bytes_avail"`
+	RawBytesUsed  uint64 `json:"raw_bytes_used"`
+	Version       uint64 `json:"version"`
 }
 
 type ResPgmap struct {
-	PgsByState []ResPgByState `json:"pgs_by_state"`
-	Version    uint64         `json:"version"`
-	NumPgs     uint64         `json:"num_pgs"`
-	NumPools   uint64         `json:"num_pools"`
-	NumObjects uint64         `json:"num_objects"`
-	DataBytes  uint64         `json:"data_bytes"`
-	BytesUsed  uint64         `json:"bytes_used"`
-	BytesAvail uint64         `json:"bytes_avail"`
-	BytesTotal uint64         `json:"bytes_total"`
-}
-
-type ResPgByState struct {
-	StateName string `json:"state_name"`
-	Count     uint64 `json:"count"`
+	PgsByState []struct {
+		StateName string `json:"state_name"`
+		Count     uint64 `json:"count"`
+	} `json:"pgs_by_state"`
+	Version    uint64 `json:"version"`
+	NumPgs     uint64 `json:"num_pgs"`
+	NumPools   uint64 `json:"num_pools"`
+	NumObjects uint64 `json:"num_objects"`
+	DataBytes  uint64 `json:"data_bytes"`
+	BytesUsed  uint64 `json:"bytes_used"`
+	BytesAvail uint64 `json:"bytes_avail"`
+	BytesTotal uint64 `json:"bytes_total"`
 }
 
 type ResPoolVar struct {
@@ -206,139 +197,120 @@ type ResPoolVar struct {
 }
 
 type ResPoolStat struct {
-	PoolName     string                  `json:"pool_name"`
-	PoolId       uint64                  `json:"pool_id"`
-	Recovery     ResPoolStatRecovery     `json:"recovery"`
-	RecoveryRate ResPoolStatRecoveryRate `json:"recovery_rate"`
-	ClientIoRate ResPoolStatClientIoRate `json:"client_io_rate"`
-	CacheIoRate  ResPoolStatCacheIoRate  `json:"cache_io_rate"`
+	PoolName string `json:"pool_name"`
+	PoolId   uint64 `json:"pool_id"`
+	Recovery struct {
+		DegradedObjects  uint64  `json:"degraded_objects"`
+		DegradedTotal    uint64  `json:"degraded_total"`
+		DegradedRatio    float32 `json:"degraded_ratio"`
+		MisplacedObjects uint64  `json:"misplaced_objects"`
+		MisplacedTotal   uint64  `json:"misplaced_total"`
+		MisplacedRatio   float32 `json:"misplaced_ratio"`
+		UnfoundObjects   uint64  `json:"unfound_objects"`
+		UnfoundTotal     uint64  `json:"unfound_total"`
+		UnfoundRatio     float32 `json:"unfound_ratio"`
+	} `json:"recovery"`
+	RecoveryRate struct {
+		RecoveringObjectsPerSec int64 `json:"recovering_objects_per_sec"`
+		RecoveringBytesPerSec   int64 `json:"recovering_bytes_per_sec"`
+		RecoveringKeysPerSec    int64 `json:"recovering_keys_per_sec"`
+		NumObjectsRecovered     int64 `json:"num_objects_recovered"`
+		NumBytesRecovered       int64 `json:"num_bytes_recovered"`
+		NumKeysRecovered        int64 `json:"num_keys_recovered"`
+	} `json:"recovery_rate"`
+	ClientIoRate struct {
+		ReadBytesSec  int64 `json:"read_bytes_sec"`
+		WriteBytesSec int64 `json:"write_bytes_sec"`
+		ReadOpPerSec  int64 `json:"read_op_per_sec"`
+		WriteOpPerSec int64 `json:"write_op_per_sec"`
+	} `json:"client_io_rate"`
+	CacheIoRate struct {
+		FlushBytesSec    int64 `json:"flush_bytes_sec"`
+		EvictBytesSec    int64 `json:"evict_bytes_sec"`
+		PromoteOpPerSec  int64 `json:"promote_op_per_sec"`
+		NumFlushModeLow  int64 `json:"num_flush_mode_low"`
+		NumFlushModeHigh int64 `json:"num_flush_mode_high"`
+		NumEvictModeSome int64 `json:"num_evict_mode_some"`
+		NumEvictModeFull int64 `json:"num_evict_mode_full"`
+	} `json:"cache_io_rate"`
 }
 
 type ResPoolStats []ResPoolStat
-
-type ResPoolStatCacheIoRate struct {
-	FlushBytesSec    int64 `json:"flush_bytes_sec"`
-	EvictBytesSec    int64 `json:"evict_bytes_sec"`
-	PromoteOpPerSec  int64 `json:"promote_op_per_sec"`
-	NumFlushModeLow  int64 `json:"num_flush_mode_low"`
-	NumFlushModeHigh int64 `json:"num_flush_mode_high"`
-	NumEvictModeSome int64 `json:"num_evict_mode_some"`
-	NumEvictModeFull int64 `json:"num_evict_mode_full"`
-}
-
-type ResPoolStatRecovery struct {
-	DegradedObjects  uint64  `json:"degraded_objects"`
-	DegradedTotal    uint64  `json:"degraded_total"`
-	DegradedRatio    float32 `json:"degraded_ratio"`
-	MisplacedObjects uint64  `json:"misplaced_objects"`
-	MisplacedTotal   uint64  `json:"misplaced_total"`
-	MisplacedRatio   float32 `json:"misplaced_ratio"`
-	UnfoundObjects   uint64  `json:"unfound_objects"`
-	UnfoundTotal     uint64  `json:"unfound_total"`
-	UnfoundRatio     float32 `json:"unfound_ratio"`
-}
-
-type ResPoolStatRecoveryRate struct {
-	RecoveringObjectsPerSec int64 `json:"recovering_objects_per_sec"`
-	RecoveringBytesPerSec   int64 `json:"recovering_bytes_per_sec"`
-	RecoveringKeysPerSec    int64 `json:"recovering_keys_per_sec"`
-	NumObjectsRecovered     int64 `json:"num_objects_recovered"`
-	NumBytesRecovered       int64 `json:"num_bytes_recovered"`
-	NumKeysRecovered        int64 `json:"num_keys_recovered"`
-}
-
-type ResPoolStatClientIoRate struct {
-	ReadBytesSec  int64 `json:"read_bytes_sec"`
-	WriteBytesSec int64 `json:"write_bytes_sec"`
-	ReadOpPerSec  int64 `json:"read_op_per_sec"`
-	WriteOpPerSec int64 `json:"write_op_per_sec"`
-}
 
 type ResPoolLs []string
 
 type ResPoolLsDetail []ResPoolDetail
 
 type ResPoolDetail struct {
-	PoolName                       string          `json:"pool_name"`
-	Flags                          uint64          `json:"flags"`
-	FlagsNames                     string          `json:"flags_names"`
-	Type                           int64           `json:"type"`
-	Size                           int64           `json:"size"`
-	MinSize                        int64           `json:"min_size"`
-	CrushRuleset                   int64           `json:"crush_ruleset"`
-	ObjectHash                     int64           `json:"object_hash"`
-	PgNum                          uint64          `json:"pg_num"`
-	PgPlacementNum                 uint64          `json:"pg_placement_num"`
-	CrashReplayInterval            uint64          `json:"crash_reply_interval"`
-	LastChange                     string          `json:"last_change"`
-	LastForceOpResend              string          `json:"last_force_op_resend"`
-	LastForceOpResendPreluminous   string          `json:"last_force_op_resend_preluminous"`
-	Auid                           uint64          `json:"auid"`
-	SnapMode                       string          `json:"snap_mode"`
-	SnapSeq                        uint64          `json:"snap_seq"`
-	SnapEpoch                      uint64          `json:"snap_epoch"`
-	PoolSnaps                      []ResPoolSnap   `json:"pool_snaps"`
-	RemovedSnaps                   string          `json:"removed_snaps"`
-	QuotaMaxBytes                  uint64          `json:"quota_max_bytes"`
-	QuotaMaxObjects                uint64          `json:"quota_max_objects"`
-	Tiers                          []uint64        `json:"tiers"`
-	TierOf                         int64           `json:"tier_of"`
-	ReadTier                       int64           `json:"read_tier"`
-	WriteTier                      int64           `json:"write_tier"`
-	CacheMode                      string          `json:"cache_mode"`
-	TargetMaxBytes                 uint64          `json:"target_max_bytes"`
-	TargetMaxObjects               uint64          `json:"target_max_objects"`
-	CacheTargetDirtyRatioMicro     uint64          `json:"cache_target_dirty_ratio_micro"`
-	CacheTargetDirtyHighRatioMicro uint64          `json:"cache_target_dirty_high_ratio_micro"`
-	CacheTargetFullRatioMicro      uint64          `json:"cache_target_full_ratio_micro"`
-	CacheMinFlushAge               uint64          `json:"cache_min_flush_age"`
-	CacheMinEvictAge               uint64          `json:"cache_min_evict_age"`
-	ErasureCodeProfile             string          `json:"erasure_code_profile"`
-	HitSetParams                   ResHitSetParams `json:"hit_set_params"`
-	HitSetPeriod                   uint64          `json:"hit_set_period"`
-	HitSetCount                    uint64          `json:"hit_set_count"`
-	UseGmtHitset                   bool            `json:"use_gmt_hitset"`
-	MinReadRecencyForPromote       uint64          `json:"min_read_recency_for_promote"`
-	MinWriteRecencyForPromote      uint64          `json:"min_write_recency_for_promote"`
-	HitSetGradeDecayRate           uint64          `json:"hit_set_grade_decay_rate"`
-	HitSetSearchLastN              uint64          `json:"hit_set_search_last_n"`
-	GradeTable                     []uint64        `json:"grade_table"`
-	StripeWidth                    uint64          `json:"stripe_width"`
-	ExpectedNumObjects             uint64          `json:"expected_num_objects"`
-	FastRead                       bool            `json:"fast_read"`
-	Options                        ResOptions      `json:"options"`
-}
-
-type ResOptions struct {
-	ScrubMinInterval         float64 `json:"scrub_min_interval"`
-	ScrubMaxInterval         float64 `json:"scrub_max_interval"`
-	DeepScrubInterval        float64 `json:"deep_scrub_interval"`
-	RecoveryPriority         int64   `json:"recovery_priority"`
-	RecoveryOpPriority       int64   `json:"recovery_op_priority"`
-	ScrubPriority            int64   `json:"scrub_priority"`
-	CompressionMode          string  `json:"compression_mode"`
-	CompressionAlgorithm     string  `json:"compression_algorithm"`
-	CompressionRequiredRatio float64 `json:"compression_required_ratio"`
-	CompressionMaxBlobSize   int64   `json:"compression_max_blob_size"`
-	CompressionMinBlobSize   int64   `json:"compression_min_blob_size"`
-	CsumType                 int64   `json:"csum_type"`
-	CsumMaxBlock             int64   `json:"csum_max_block"`
-	CsumMinBlock             int64   `json:"csum_min_block"`
-}
-
-type ResHitSetParams struct {
-	Type string `json:"type"`
-}
-
-type ResPoolSnap struct {
-	Name   string `json:"name"`
-	Snapid uint64 `json:"snapid"`
-	Stamp  string `json:"stamp"`
-}
-
-type ResNumPgByState struct {
-	Name string `json:"name"`
-	Num  uint64 `json:"num"`
+	PoolName                     string `json:"pool_name"`
+	Flags                        uint64 `json:"flags"`
+	FlagsNames                   string `json:"flags_names"`
+	Type                         int64  `json:"type"`
+	Size                         int64  `json:"size"`
+	MinSize                      int64  `json:"min_size"`
+	CrushRuleset                 int64  `json:"crush_ruleset"`
+	ObjectHash                   int64  `json:"object_hash"`
+	PgNum                        uint64 `json:"pg_num"`
+	PgPlacementNum               uint64 `json:"pg_placement_num"`
+	CrashReplayInterval          uint64 `json:"crash_reply_interval"`
+	LastChange                   string `json:"last_change"`
+	LastForceOpResend            string `json:"last_force_op_resend"`
+	LastForceOpResendPreluminous string `json:"last_force_op_resend_preluminous"`
+	Auid                         uint64 `json:"auid"`
+	SnapMode                     string `json:"snap_mode"`
+	SnapSeq                      uint64 `json:"snap_seq"`
+	SnapEpoch                    uint64 `json:"snap_epoch"`
+	PoolSnaps                    []struct {
+		Name   string `json:"name"`
+		Snapid uint64 `json:"snapid"`
+		Stamp  string `json:"stamp"`
+	} `json:"pool_snaps"`
+	RemovedSnaps                   string   `json:"removed_snaps"`
+	QuotaMaxBytes                  uint64   `json:"quota_max_bytes"`
+	QuotaMaxObjects                uint64   `json:"quota_max_objects"`
+	Tiers                          []uint64 `json:"tiers"`
+	TierOf                         int64    `json:"tier_of"`
+	ReadTier                       int64    `json:"read_tier"`
+	WriteTier                      int64    `json:"write_tier"`
+	CacheMode                      string   `json:"cache_mode"`
+	TargetMaxBytes                 uint64   `json:"target_max_bytes"`
+	TargetMaxObjects               uint64   `json:"target_max_objects"`
+	CacheTargetDirtyRatioMicro     uint64   `json:"cache_target_dirty_ratio_micro"`
+	CacheTargetDirtyHighRatioMicro uint64   `json:"cache_target_dirty_high_ratio_micro"`
+	CacheTargetFullRatioMicro      uint64   `json:"cache_target_full_ratio_micro"`
+	CacheMinFlushAge               uint64   `json:"cache_min_flush_age"`
+	CacheMinEvictAge               uint64   `json:"cache_min_evict_age"`
+	ErasureCodeProfile             string   `json:"erasure_code_profile"`
+	HitSetParams                   struct {
+		Type string `json:"type"`
+	} `json:"hit_set_params"`
+	HitSetPeriod              uint64   `json:"hit_set_period"`
+	HitSetCount               uint64   `json:"hit_set_count"`
+	UseGmtHitset              bool     `json:"use_gmt_hitset"`
+	MinReadRecencyForPromote  uint64   `json:"min_read_recency_for_promote"`
+	MinWriteRecencyForPromote uint64   `json:"min_write_recency_for_promote"`
+	HitSetGradeDecayRate      uint64   `json:"hit_set_grade_decay_rate"`
+	HitSetSearchLastN         uint64   `json:"hit_set_search_last_n"`
+	GradeTable                []uint64 `json:"grade_table"`
+	StripeWidth               uint64   `json:"stripe_width"`
+	ExpectedNumObjects        uint64   `json:"expected_num_objects"`
+	FastRead                  bool     `json:"fast_read"`
+	Options                   struct {
+		ScrubMinInterval         float64 `json:"scrub_min_interval"`
+		ScrubMaxInterval         float64 `json:"scrub_max_interval"`
+		DeepScrubInterval        float64 `json:"deep_scrub_interval"`
+		RecoveryPriority         int64   `json:"recovery_priority"`
+		RecoveryOpPriority       int64   `json:"recovery_op_priority"`
+		ScrubPriority            int64   `json:"scrub_priority"`
+		CompressionMode          string  `json:"compression_mode"`
+		CompressionAlgorithm     string  `json:"compression_algorithm"`
+		CompressionRequiredRatio float64 `json:"compression_required_ratio"`
+		CompressionMaxBlobSize   int64   `json:"compression_max_blob_size"`
+		CompressionMinBlobSize   int64   `json:"compression_min_blob_size"`
+		CsumType                 int64   `json:"csum_type"`
+		CsumMaxBlock             int64   `json:"csum_max_block"`
+		CsumMinBlock             int64   `json:"csum_min_block"`
+	} `json:"options"`
 }
 
 type ResVersion struct {
@@ -346,57 +318,45 @@ type ResVersion struct {
 }
 
 type ResHealth struct {
-	Health        ResHealthHealth `json:"health"`
-	Timechecks    ResTimechecks   `json:"timechecks"`
-	Summary       []ResSummary    `json:"summary"`
-	OverallStatus string          `json:"overall_status"`
-	Detail        []string        `json:"detail"`
-}
-
-type ResHealthHealth struct {
-	HealthServices []ResHealthService `json:"health_services"`
-}
-
-type ResHealthService struct {
-	Mons []ResHealthServiceMon `json:"mons"`
-}
-
-type ResHealthServiceMon struct {
-	Name         string        `json:"name"`
-	KbTotal      int64         `json:"kb_total"`
-	KbUsed       int64         `json:"kb_used"`
-	KbAvail      int64         `json:"kb_avail"`
-	AvailPercent int           `json:"avail_percent"`
-	LastUpdated  string        `json:"last_updated"`
-	Health       string        `json:"health"`
-	StoreStats   ResStoreStats `json:"store_stats"`
-}
-
-type ResStoreStats struct {
-	BytesTotal  int64  `json:"bytes_total"`
-	BytesSst    int64  `json:"bytes_sst"`
-	BytesLog    int64  `json:"bytes_log"`
-	BytesMisc   int64  `json:"bytes_misc"`
-	LastUpdated string `json:"last_updated"`
+	Health struct {
+		HealthServices []struct {
+			Mons []struct {
+				Name         string `json:"name"`
+				KbTotal      int64  `json:"kb_total"`
+				KbUsed       int64  `json:"kb_used"`
+				KbAvail      int64  `json:"kb_avail"`
+				AvailPercent int    `json:"avail_percent"`
+				LastUpdated  string `json:"last_updated"`
+				Health       string `json:"health"`
+				StoreStats   struct {
+					BytesTotal  int64  `json:"bytes_total"`
+					BytesSst    int64  `json:"bytes_sst"`
+					BytesLog    int64  `json:"bytes_log"`
+					BytesMisc   int64  `json:"bytes_misc"`
+					LastUpdated string `json:"last_updated"`
+				} `json:"store_stats"`
+			} `json:"mons"`
+		} `json:"health_services"`
+	} `json:"health"`
+	Timechecks struct {
+		Epoch       uint64 `json:"epoch"`
+		Round       int64  `json:"round"`
+		RoundStatus string `json:"round_status"`
+		Mons        []struct {
+			Name     string  `json:"name"`
+			Skew     float32 `json:"skew"`
+			Lantency float32 `json:"lantency"`
+			Health   string  `json:"health"`
+		} `json:"mons"`
+	} `json:"timechecks"`
+	Summary       []ResSummary `json:"summary"`
+	OverallStatus string       `json:"overall_status"`
+	Detail        []string     `json:"detail"`
 }
 
 type ResSummary struct {
 	Severity string `json:"severity"`
 	Summary  string `json:"summary"`
-}
-
-type ResTimechecks struct {
-	Epoch       uint64             `json:"epoch"`
-	Round       int64              `json:"round"`
-	RoundStatus string             `json:"round_status"`
-	Mons        []ResTimechecksMon `json:"mons"`
-}
-
-type ResTimechecksMon struct {
-	Name     string  `json:"name"`
-	Skew     float32 `json:"skew"`
-	Lantency float32 `json:"lantency"`
-	Health   string  `json:"health"`
 }
 
 type ResStatus struct {
