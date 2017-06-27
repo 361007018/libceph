@@ -141,14 +141,18 @@ type ResPgmap struct {
 		StateName string `json:"state_name"`
 		Count     uint64 `json:"count"`
 	} `json:"pgs_by_state"`
-	Version    uint64 `json:"version"`
-	NumPgs     uint64 `json:"num_pgs"`
-	NumPools   uint64 `json:"num_pools"`
-	NumObjects uint64 `json:"num_objects"`
-	DataBytes  uint64 `json:"data_bytes"`
-	BytesUsed  uint64 `json:"bytes_used"`
-	BytesAvail uint64 `json:"bytes_avail"`
-	BytesTotal uint64 `json:"bytes_total"`
+	Version       uint64 `json:"version"`
+	NumPgs        uint64 `json:"num_pgs"`
+	NumPools      uint64 `json:"num_pools"`
+	NumObjects    uint64 `json:"num_objects"`
+	DataBytes     uint64 `json:"data_bytes"`
+	BytesUsed     uint64 `json:"bytes_used"`
+	BytesAvail    uint64 `json:"bytes_avail"`
+	BytesTotal    uint64 `json:"bytes_total"`
+	ReadBytesSec  uint64 `json:"read_bytes_sec"`
+	WriteBytesSec uint64 `json:"write_bytes_sec"`
+	ReadOpPerSec  uint64 `json:"read_op_per_sec"`
+	WriteOpPerSec uint64 `json:"write_op_per_sec"`
 }
 
 type ResPoolVar struct {
