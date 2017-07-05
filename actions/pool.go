@@ -103,11 +103,20 @@ func (this *Pool) Set(pool_name string, key string, value string) error {
 }
 
 func (this *Pool) Stats(pool_name string) (*common.ResPoolStats, error) {
-	cmdline, err := json.Marshal(map[string]interface{}{
-		"prefix": "osd pool stats",
-		"name":   pool_name,
-		"format": "json",
-	})
+	var err error
+	var cmdline []byte
+	if pool_name == "" {
+		cmdline, err = json.Marshal(map[string]interface{}{
+			"prefix": "osd pool stats",
+			"format": "json",
+		})
+	} else {
+		cmdline, err = json.Marshal(map[string]interface{}{
+			"prefix": "osd pool stats",
+			"name":   pool_name,
+			"format": "json",
+		})
+	}
 	bytes, _, err := this.CephConn.Rados.MonCommand(cmdline)
 	if err != nil {
 		return nil, err

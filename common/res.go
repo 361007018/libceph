@@ -97,6 +97,35 @@ type ResMonmap struct {
 	} `json:"mons"`
 }
 
+type ResOsdDf struct {
+	Nodes []struct {
+		Id          int64   `json:"id"`
+		Name        string  `json:"name"`
+		Type        string  `json:"type"`
+		TypeId      int64   `json:"type_id"`
+		CrushWeight float64 `json:"crush_weight"`
+		Depth       uint64  `json:"depth"`
+		Reweight    float64 `json:"reweight"`
+		Kb          uint64  `json:"kb"`
+		KbUsed      uint64  `json:"kb_used"`
+		KbAvail     uint64  `json:"kb_avail"`
+		Utilization float64 `json:"utilization"`
+		Var         float64 `json:"var"`
+		Pgs         uint64  `json:"pgs"`
+	} `json:"nodes"`
+	Stray []struct {
+	} `json:"stray"`
+	Summary struct {
+		TotalKb            uint64  `json:"total_kb"`
+		TotalKbUsed        uint64  `json:"total_kb_used"`
+		TotalKbAvail       uint64  `json:"total_kb_avail"`
+		AverageUtilization float64 `json:"average_utilization"`
+		MinVar             float64 `json:"min_var"`
+		MaxVar             float64 `json:"max_var"`
+		Dev                float64 `json:"dev"`
+	} `json:"summary"`
+}
+
 type ResOsdmap struct {
 	Epoch          int64  `json:"epoch"`
 	NumOsds        int64  `json:"num_osds"`
