@@ -2,16 +2,52 @@ package actions
 
 import (
 	"encoding/json"
-	"libceph/models"
+	"libceph/common"
 )
 
-// Cluster ...
 type Cluster struct {
 	ActionBase
 }
 
-// Status ...
-func (this *Cluster) Status() (*models.ResponseStatus, error) {
+func (this *Cluster) Df() (*common.ResDf, error) {
+	cmdline, err := json.Marshal(map[string]interface{}{
+		"prefix": "df",
+		"detail": "detail",
+		"format": "json",
+	})
+	if err != nil {
+		return nil, err
+	}
+	bytes, _, err := this.CephConn.Rados.MonCommand(cmdline)
+	if err != nil {
+		return nil, err
+	}
+	result := new(common.ResDf)
+	if err := json.Unmarshal(bytes, result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (this *Cluster) QuorumStatus() (*common.ResQuorumStatus, error) {
+	cmdline, err := json.Marshal(map[string]interface{}{
+		"prefix": "quorum_status",
+	})
+	if err != nil {
+		return nil, err
+	}
+	bytes, _, err := this.CephConn.Rados.MonCommand(cmdline)
+	if err != nil {
+		return nil, err
+	}
+	result := new(common.ResQuorumStatus)
+	if err := json.Unmarshal(bytes, result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (this *Cluster) Status() (*common.ResStatus, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "status",
 		"format": "json",
@@ -19,19 +55,18 @@ func (this *Cluster) Status() (*models.ResponseStatus, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, _, err := this.CephConn.Rados.MonCommand(cmdline)
+	bytes, _, err := this.CephConn.Rados.MonCommand(cmdline)
 	if err != nil {
 		return nil, err
 	}
-	var responseStatus = new(models.ResponseStatus)
-	err = json.Unmarshal(result, &responseStatus)
-	if err != nil {
+	result := new(common.ResStatus)
+	if err := json.Unmarshal(bytes, result); err != nil {
 		return nil, err
 	}
-	return responseStatus, nil
+	return result, nil
 }
 
-func (this *Cluster) Version() (*models.ResponseVersion, error) {
+func (this *Cluster) Version() (*common.ResVersion, error) {
 	cmdline, err := json.Marshal(map[string]interface{}{
 		"prefix": "version",
 		"format": "json",
@@ -39,14 +74,13 @@ func (this *Cluster) Version() (*models.ResponseVersion, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, _, err := this.CephConn.Rados.MonCommand(cmdline)
+	bytes, _, err := this.CephConn.Rados.MonCommand(cmdline)
 	if err != nil {
 		return nil, err
 	}
-	var responseVersion = new(models.ResponseVersion)
-	err = json.Unmarshal(result, responseVersion)
-	if err != nil {
+	result := new(common.ResVersion)
+	if err := json.Unmarshal(bytes, result); err != nil {
 		return nil, err
 	}
-	return responseVersion, nil
+	return result, nil
 }
