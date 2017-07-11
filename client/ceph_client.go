@@ -1,8 +1,8 @@
 package client
 
 import (
-	"libceph/actions"
-	"libceph/conn"
+	"github.com/361007018/libceph/actions"
+	"github.com/361007018/libceph/conn"
 )
 
 var cephClient *CephClient
