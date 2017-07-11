@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"libceph/conn"
+	"github.com/361007018/libceph/conn"
 )
 
 type ActionBase struct {

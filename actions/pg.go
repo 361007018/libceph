@@ -2,7 +2,7 @@ package actions
 
 import (
 	"encoding/json"
-	"libceph/common"
+	"github.com/361007018/libceph/common"
 )
 
 type Pg struct {
